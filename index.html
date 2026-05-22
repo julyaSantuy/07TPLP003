@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Portal - Ujian Online Pemrograman Web</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;950&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for question grid */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .print\:hidden {
+                display: none !important;
+            }
+            .print\:shadow-none {
+                box-shadow: none !important;
+            }
+            .print\:border-none {
+                border: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between">
+
+    <!-- Brand Header -->
+    <header class="bg-white border-b border-slate-200 py-4 px-6 shadow-sm print:hidden">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 p-2.5 rounded-xl text-white shadow-md shadow-blue-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold text-slate-800 tracking-tight">CBT Portal</h1>
+                    <p class="text-xs text-slate-500 font-medium">Sistem Ujian Online Terintegrasi</p>
+                </div>
+            </div>
+            <span class="hidden sm:inline bg-blue-50 text-blue-700 font-semibold px-4 py-1.5 rounded-full text-xs border border-blue-100">
+                Materi: Pemrograman Web (50 Soal)
+            </span>
+        </div>
+    </header>
+
+    <!-- 1. Screen Pendaftaran -->
+    <div id="screen-register" class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden border border-slate-100 transition duration-300 hover:shadow-2xl">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-8 text-white text-center">
+                <h2 class="text-2xl font-bold">Ujian Tengah/Akhir Semester</h2>
+                <p class="text-blue-100 text-sm mt-2 font-light">
+                    Silakan isi data diri Anda secara lengkap sebelum memulai simulasi ujian.
+                </p>
+            </div>
+            
+            <form id="form-register" class="p-6 sm:p-8 space-y-5">
+                <!-- Custom Alert Banner (Hidden by default) -->
+                <div id="register-error" class="hidden p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-semibold flex items-center gap-2">
+                    <svg class="w-5 h-5 flex-shrink-0 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span id="register-error-msg">Harap lengkapi semua data pendaftaran!</span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nama Lengkap</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <input
+                            type="text"
+                            id="reg-nama"
+                            required
+                            placeholder="Masukkan nama lengkap"
+                            class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-slate-800"
+                        />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">NIM / Nomor Induk</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                                </svg>
+                            </div>
+                            <input
+                                type="text"
+                                id="reg-nim"
+                                required
+                                placeholder="Contoh: 22091060XX"
+                                class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-slate-800"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Kelas / Kelompok</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                            </div>
+                            <input
+                                type="text"
+                                id="reg-kelas"
+                                required
+                                placeholder="Contoh: IF-A 2022"
+                                class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-slate-800"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ketentuan Ujian Box -->
+                <div class="bg-amber-50 rounded-xl border border-amber-200 p-4 space-y-2 text-amber-800">
+                    <h4 class="text-xs font-bold uppercase tracking-wider flex items-center">
+                        <svg class="w-4 h-4 mr-1.5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Aturan & Informasi Ujian:
+                    </h4>
+                    <ul class="text-xs space-y-1 list-disc list-inside font-medium leading-relaxed">
+                        <li>Jumlah soal: <strong>50 Soal Pilihan Ganda</strong>.</li>
+                        <li>Waktu pengerjaan: <strong>90 Menit (01:30:00)</strong>.</li>
+                        <li>Ujian bersifat <em>close-book</em>, dilarang mencari jawaban eksternal.</li>
+                        <li>Nilai kelulusan minimum (Passing Grade) adalah <strong>70%</strong>.</li>
+                    </ul>
+                </div>
+
+                <button
+                    type="submit"
+                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition transform active:scale-95 duration-200 flex justify-center items-center text-sm"
+                >
+                    Mulai Ujian Sekarang
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Screen Lembar Soal Ujian (Hidden by default) -->
+    <div id="screen-exam" class="hidden flex-grow flex flex-col">
+        <!-- Exam Sticky Header -->
+        <header class="bg-white border-b border-slate-200 py-3.5 px-4 sm:px-6 shadow-sm sticky top-0 z-10">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-indigo-600 text-white p-2.5 rounded-xl font-bold text-xs uppercase shadow-sm">
+                        Web
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-800">Ujian Online Pemrograman Web</h2>
+                        <p class="text-xs text-slate-500">
+                            Peserta: <span id="student-name-display" class="font-semibold text-slate-700">Nama</span> 
+                            | NIM: <span id="student-nim-display" class="font-semibold text-slate-700">000</span> 
+                            | Kelas: <span id="student-kelas-display" class="font-semibold text-slate-700">A</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timer Badge & Selesai -->
+                <div class="flex items-center space-x-4 self-end md:self-auto">
+                    <div id="timer-badge" class="flex items-center space-x-2 px-4 py-2 rounded-full border border-amber-200 bg-amber-50 text-amber-800 shadow-sm">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div class="text-right">
+                            <div class="text-[10px] uppercase font-bold tracking-wider leading-none">Sisa Waktu</div>
+                            <div id="timer-clock" class="font-mono text-sm sm:text-base font-bold">01:30:00</div>
+                        </div>
+                    </div>
+
+                    <button
+                        id="btn-trigger-finish"
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition active:scale-95 shadow-md flex items-center"
+                    >
+                        Akhiri Ujian
+                        <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="flex-grow max-w-7xl mx-auto w-full p-3 sm:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+            
+            <!-- Left Side: Soal Box -->
+            <div class="lg:col-span-3 flex flex-col space-y-4">
+                
+                <!-- Status Category Bar -->
+                <div class="bg-white rounded-xl p-4 border border-slate-200 flex justify-between items-center shadow-sm">
+                    <span class="text-xs sm:text-sm font-semibold text-slate-500">
+                        Soal Ke <strong id="question-current-num" class="text-slate-800 text-base">1</strong> dari <strong class="text-slate-800">50</strong>
+                    </span>
+                    <span id="question-category" class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full border border-indigo-100 uppercase tracking-wide">
+                        HTML
+                    </span>
+                </div>
+
+                <!-- Question Main Card -->
+                <div class="bg-white rounded-2xl p-5 sm:p-8 border border-slate-200 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 id="question-text" class="text-base sm:text-lg text-slate-800 font-semibold leading-relaxed mb-6">
+                          Memuat pertanyaan...
+                        </h3>
+
+                        <!-- List Pilihan Jawaban -->
+                        <div id="options-container" class="space-y-3.5">
+                            <!-- Dynamic answers will render here -->
+                        </div>
+                    </div>
+
+                    <!-- Navigation Action Buttons inside Card -->
+                    <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row gap-4 items-center justify-between">
+                        <button
+                            id="btn-prev-question"
+                            class="w-full sm:w-auto px-5 py-2.5 bg-slate-200 hover:bg-slate-300 disabled:opacity-40 disabled:hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition flex items-center justify-center space-x-2"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            <span>Sebelumnya</span>
+                        </button>
+
+                        <!-- Toggle Doubtful -->
+                        <button
+                            id="btn-toggle-doubtful"
+                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl text-sm font-semibold transition flex items-center justify-center space-x-2 border-2 border-amber-500 text-amber-600 hover:bg-amber-50"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <span id="doubtful-text">Tandai Ragu-Ragu</span>
+                        </button>
+
+                        <button
+                            id="btn-next-question"
+                            class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition shadow-md flex items-center justify-center space-x-2"
+                        >
+                            <span id="btn-next-text">Selanjutnya</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Navigation Grid -->
+            <div class="lg:col-span-1 flex flex-col space-y-4">
+                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col h-full">
+                    <h4 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3 mb-3 uppercase tracking-wider">
+                        Navigasi Soal
+                    </h4>
+
+                    <!-- Status Color Legend -->
+                    <div class="grid grid-cols-2 gap-2 text-[10px] font-bold text-slate-500 mb-4 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded bg-blue-600 inline-block"></span>
+                            <span>Aktif</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded bg-emerald-500 inline-block"></span>
+                            <span>Sudah Diisi</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded bg-amber-500 inline-block"></span>
+                            <span>Ragu-Ragu</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded bg-white border border-slate-300 inline-block"></span>
+                            <span>Kosong</span>
+                        </div>
+                    </div>
+
+                    <!-- Number Grid Selector -->
+                    <div id="grid-navigation" class="grid grid-cols-5 gap-2 overflow-y-auto max-h-[340px] lg:max-h-[400px] pr-1 custom-scrollbar">
+                        <!-- Dynamic buttons from JS -->
+                    </div>
+
+                    <!-- Progress Bar Summary -->
+                    <div class="mt-4 pt-4 border-t border-slate-100 text-xs text-slate-500 font-medium flex justify-between">
+                        <span>Progres Pengerjaan:</span>
+                        <span class="text-slate-800 font-bold"><span id="progress-filled-num">0</span> / 50</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 3. Screen Hasil Evaluasi & Review (Hidden by default) -->
+    <div id="screen-result" class="hidden flex-grow flex flex-col">
+        <header class="bg-white border-b border-slate-200 py-4 px-6 shadow-sm print:hidden">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-emerald-600 text-white p-2.5 rounded-xl font-bold text-sm shadow-md shadow-emerald-100">
+                        HASIL
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-extrabold text-slate-800">Laporan Hasil Ujian Online</h1>
+                        <p class="text-xs text-slate-500 font-medium">Materi: Pemrograman Web (50 Soal)</p>
+                    </div>
+                </div>
+
+                <button
+                    onclick="window.print()"
+                    class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2.5 rounded-xl border border-slate-300 transition flex items-center"
+                >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Cetak Hasil / Ekspor PDF
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Result Workspace -->
+        <main class="flex-grow max-w-4xl mx-auto w-full p-4 sm:p-8 space-y-8">
+            
+            <!-- Result Certificate Panel -->
+            <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden print:shadow-none print:border-none">
+                <div id="result-badge-container" class="p-6 text-white text-center sm:text-left sm:flex sm:items-center sm:justify-between bg-gradient-to-r from-emerald-600 to-teal-700">
+                    <div class="space-y-2">
+                        <span class="bg-white/20 text-white font-bold px-3 py-1 rounded-full text-[10px] uppercase tracking-wider">
+                            Status Kelulusan
+                        </span>
+                        <h2 id="result-status-title" class="text-2xl sm:text-3xl font-extrabold">
+                            Dinyatakan LULUS!
+                        </h2>
+                        <p id="result-status-desc" class="text-white/80 text-sm font-light">
+                            Nilai Anda memenuhi kriteria batas minimum kelulusan (70).
+                        </p>
+                    </div>
+
+                    <!-- Big Score View -->
+                    <div class="mt-4 sm:mt-0 flex flex-col items-center justify-center bg-white/10 px-6 py-4 rounded-2xl border border-white/25">
+                        <span class="text-xs font-semibold tracking-wider uppercase text-white/90">Skor Akhir</span>
+                        <span id="result-score-num" class="text-4xl sm:text-5xl font-black mt-1">85</span>
+                        <span class="text-[10px] text-white/80 font-medium mt-0.5">Skor Min: 70</span>
+                    </div>
+                </div>
+
+                <!-- Student Identity Meta -->
+                <div class="p-6 bg-slate-50 border-b border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-slate-700">
+                    <div class="space-y-1">
+                        <span class="text-slate-400 text-xs uppercase font-semibold">Nama Peserta</span>
+                        <p id="res-nama-val" class="font-bold text-slate-800">Siswa</p>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-slate-400 text-xs uppercase font-semibold">NIM (Identitas)</span>
+                        <p id="res-nim-val" class="font-bold text-slate-800">2200000</p>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-slate-400 text-xs uppercase font-semibold">Kelas</span>
+                        <p id="res-kelas-val" class="font-bold text-slate-800">IF-A 2022</p>
+                    </div>
+                </div>
+
+                <!-- Stats Grid details -->
+                <div class="p-6 sm:p-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                    <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                        <span id="stats-correct" class="block text-xl sm:text-2xl font-black text-emerald-700">0</span>
+                        <span class="text-xs text-emerald-600 font-semibold uppercase mt-1 block">Benar</span>
+                    </div>
+                    <div class="p-4 bg-rose-50 rounded-2xl border border-rose-100">
+                        <span id="stats-incorrect" class="block text-xl sm:text-2xl font-black text-rose-700">0</span>
+                        <span class="text-xs text-rose-600 font-semibold uppercase mt-1 block">Salah</span>
+                    </div>
+                    <div class="p-4 bg-slate-100 rounded-2xl border border-slate-200">
+                        <span id="stats-empty" class="block text-xl sm:text-2xl font-black text-slate-700">0</span>
+                        <span class="text-xs text-slate-500 font-semibold uppercase mt-1 block">Kosong</span>
+                    </div>
+                    <div class="p-4 bg-amber-50 rounded-2xl border border-amber-100">
+                        <span id="stats-doubtful" class="block text-xl sm:text-2xl font-black text-amber-700">0</span>
+                        <span class="text-xs text-amber-600 font-semibold uppercase mt-1 block">Ragu-Ragu</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Review Header and Filter -->
+            <div class="space-y-5 print:hidden">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                    <h3 class="text-lg font-bold text-slate-800 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Lembar Kunci &amp; Pembahasan Soal
+                    </h3>
+
+                    <!-- Interactive Review Filters -->
+                    <div class="flex flex-wrap gap-1 bg-slate-200 p-1 rounded-xl">
+                        <button
+                            id="filter-all"
+                            class="text-xs px-3 py-1.5 rounded-lg font-bold transition bg-white text-slate-800 shadow-sm"
+                        >
+                            Semua (50)
+                        </button>
+                        <button
+                            id="filter-correct"
+                            class="text-xs px-3 py-1.5 rounded-lg font-bold transition text-slate-600 hover:text-slate-900"
+                        >
+                            Benar (0)
+                        </button>
+                        <button
+                            id="filter-incorrect"
+                            class="text-xs px-3 py-1.5 rounded-lg font-bold transition text-slate-600 hover:text-slate-900"
+                        >
+                            Salah (0)
+                        </button>
+                        <button
+                            id="filter-doubtful"
+                            class="text-xs px-3 py-1.5 rounded-lg font-bold transition text-slate-600 hover:text-slate-900"
+                        >
+                            Ragu (0)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Review Feed Container -->
+                <div id="review-feed" class="space-y-4">
+                    <!-- Cards populated via JS loop -->
+                </div>
+            </div>
+
+            <!-- Selesaikan Pembahasan footer action -->
+            <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row gap-4 justify-between items-center print:hidden">
+                <button
+                    id="btn-restart-exam"
+                    class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-md transition flex items-center justify-center"
+                >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18" />
+                    </svg>
+                    Ulangi Ujian Baru
+                </button>
+
+                <span id="finish-timestamp" class="text-slate-400 text-xs font-semibold">
+                    Ujian diselesaikan pada: -
+                </span>
+            </div>
+        </main>
+    </div>
+
+    <!-- Custom Confirm End Session Modal -->
+    <div id="modal-confirm" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
+            <div class="text-center">
+                <div class="w-14 h-14 bg-amber-50 rounded-full flex items-center justify-center mx-auto text-amber-500 border border-amber-200 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800">Selesaikan Ujian?</h3>
+                <p class="text-slate-500 text-sm mt-2">
+                    Apakah Anda yakin ingin mengakhiri sesi ujian ini? Pastikan semua soal telah diperiksa dan tidak ada jawaban ragu-ragu yang terlewat.
+                </p>
+
+                <!-- Stats summary before sending -->
+                <div class="my-4 p-3.5 bg-slate-50 rounded-xl text-left text-xs space-y-2 border border-slate-200">
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Jumlah Jawaban Diisi:</span>
+                        <span id="modal-stat-filled" class="font-bold text-emerald-600">0 Soal</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Jumlah Masih Ragu-Ragu:</span>
+                        <span id="modal-stat-doubtful" class="font-bold text-amber-600">0 Soal</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Belum Dijawab:</span>
+                        <span id="modal-stat-empty" class="font-bold text-rose-600">0 Soal</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex space-x-3 mt-6">
+                <button
+                    id="btn-modal-cancel"
+                    class="flex-1 py-2.5 border border-slate-300 rounded-xl text-sm text-slate-600 hover:bg-slate-50 font-semibold transition"
+                >
+                    Batal / Kembali
+                </button>
+                <button
+                    id="btn-modal-submit"
+                    class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-md transition"
+                >
+                    Ya, Kirim Jawaban
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core App Footer -->
+    <footer class="text-center py-4 text-xs text-slate-400 bg-white border-t border-slate-100 font-medium print:hidden">
+        Hak Cipta &copy; 2026 Aplikasi CBT Pemrograman Web. All rights reserved.
+    </footer>
+
+    <script>
+        const SOAL_DATASET = [
+            {
+                id: 1,
+                category: "HTML",
+                question: "Manakah dari elemen HTML berikut yang merupakan elemen block-level default?",
+                options: ["<a>", "<span>", "<div>", "<img>"],
+                correct: 2,
+                explanation: "Elemen <div> secara default bersifat block-level (mengambil lebar penuh baris), sedangkan <a>, <span>, dan <img> adalah inline-level."
+            },
+            {
+                id: 2,
+                category: "HTML",
+                question: "Tag HTML yang tepat untuk mendefinisikan navigasi utama situs adalah...",
+                options: ["<navigation>", "<nav>", "<menu>", "<navbar>"],
+                correct: 1,
+                explanation: "Sesuai dengan spesifikasi HTML5, elemen <nav> digunakan khusus untuk menampung sekumpulan tautan navigasi utama."
+            },
+            {
+                id: 3,
+                category: "HTML",
+                question: "Bagaimana cara membuka tautan (link) di tab baru menggunakan HTML?",
+                options: ["<a href='url' target='_new'>", "<a href='url' target='_blank'>", "<a href='url' open='new'>", "<a href='url' target='new_tab'>"],
+                correct: 1,
+                explanation: "Atribut target='_blank' digunakan untuk membuka dokumen yang ditautkan di jendela atau tab baru."
+            },
+            {
+                id: 4,
+                category: "HTML",
+                question: "Tipe input HTML5 yang digunakan khusus untuk memilih tanggal secara visual adalah...",
+                options: ["<input type='datetime'>", "<input type='calendar'>", "<input type='date'>", "<input type='time'>"],
+                correct: 2,
+                explanation: "Tipe input 'date' memicu pemilih tanggal (date picker) bawaan peramban (browser)."
+            },
+            {
+                id: 5,
+                category: "HTML",
+                question: "Atribut apa yang wajib diisi pada tag <img> untuk aspek aksesibilitas (SEO & Screen Reader)?",
+                options: ["title", "src", "alt", "longdesc"],
+                correct: 2,
+                explanation: "Atribut 'alt' (alternative text) wajib untuk menjelaskan isi gambar kepada mesin pencari dan perangkat pembaca layar bagi tunanetra."
+            },
+            {
+                id: 6,
+                category: "HTML",
+                question: "Meta tag mana yang digunakan untuk memastikan halaman web responsif terhadap layar mobile?",
+                options: ["<meta name='mobile' content='responsive'>", "<meta name='viewport' content='width=device-width, initial-scale=1.0'>", "<meta name='screen' content='width=device-width'>", "<meta name='device' content='viewport'>"],
+                correct: 1,
+                explanation: "Meta viewport mengontrol dimensi dan penskalaan area pandang browser pada perangkat seluler."
+            },
+            {
+                id: 7,
+                category: "HTML",
+                question: "Deklarasi <!DOCTYPE html> di awal dokumen berfungsi untuk...",
+                options: ["Menginformasikan browser bahwa ini adalah dokumen HTML5", "Menghubungkan file dengan server eksternal", "Membuat halaman web aman dari malware", "Menentukan bahasa pemrograman backend yang digunakan"],
+                correct: 0,
+                explanation: "<!DOCTYPE html> adalah instruksi standar yang menyatakan kepada web browser bahwa dokumen yang sedang dibaca menggunakan standar HTML5."
+            },
+            {
+                id: 8,
+                category: "CSS",
+                question: "Urutan yang benar untuk komponen Box Model dari dalam ke luar adalah...",
+                options: ["Content - Padding - Border - Margin", "Content - Margin - Border - Padding", "Padding - Content - Border - Margin", "Border - Padding - Content - Margin"],
+                correct: 0,
+                explanation: "Urutan Box Model dari dalam ke luar: Konten itu sendiri, dibatasi Padding, dilindungi oleh Border, dan dipisahkan dengan elemen lain melalui Margin."
+            },
+            {
+                id: 9,
+                category: "CSS",
+                question: "Properti Flexbox mana yang digunakan untuk menyejajarkan item-item secara horizontal di tengah container?",
+                options: ["align-items: center;", "justify-content: center;", "align-content: center;", "text-align: center;"],
+                correct: 1,
+                explanation: "Properti justify-content mengontrol perataan item di sepanjang sumbu utama (main axis) yang secara default mengarah horizontal."
+            },
+            {
+                id: 10,
+                category: "CSS",
+                question: "Sintaks CSS Grid yang tepat untuk membuat 3 kolom dengan lebar yang sama secara dinamis adalah...",
+                options: ["grid-template-columns: 33% 33% 33%;", "grid-template-columns: repeat(3, 1fr);", "grid-columns: 3;", "grid-layout-columns: 1fr 1fr 1fr;"],
+                correct: 1,
+                explanation: "Fungsi repeat(3, 1fr) membuat tiga kolom berukuran sama memanfaatkan unit pecahan fleksibel (Fractional Unit)."
+            },
+            {
+                id: 11,
+                category: "CSS",
+                question: "Antara selector ID (#id), Selector Class (.class), dan Selector Tag (tag), manakah yang memiliki spesifisitas (specificity) tertinggi?",
+                options: ["Selector Tag", "Selector Class", "Selector ID", "Ketiganya memiliki tingkat spesifisitas yang sama"],
+                correct: 2,
+                explanation: "Dalam urutan spesifisitas CSS, ID Selector (#id) jauh lebih kuat dibanding Class (.class), yang mana Class juga lebih kuat dibanding Tag selector."
+            },
+            {
+                id: 12,
+                category: "CSS",
+                question: "Nilai properti position apa yang memosisikan elemen relatif terhadap viewport browser sehingga tetap diam saat di-scroll?",
+                options: ["position: absolute;", "position: relative;", "position: fixed;", "position: sticky;"],
+                correct: 2,
+                explanation: "Position: fixed mengunci posisi elemen relatif terhadap jendela browser (viewport), tidak terpengaruh oleh pengguliran halaman."
+            },
+            {
+                id: 13,
+                category: "CSS",
+                question: "Bagaimana penulisan Media Query yang tepat untuk menerapkan gaya khusus layar berukuran maksimal 768px?",
+                options: ["@media limit (max-width: 768px)", "@media (max-width: 768px)", "@screen and (width <= 768px)", "@media-screen and (width-max: 768px)"],
+                correct: 1,
+                explanation: "Format penulisan media query standar adalah @media (max-width: 768px) {...} untuk menarget layar dengan lebar maksimal 768 piksel."
+            },
+            {
+                id: 14,
+                category: "CSS",
+                question: "Bagaimana cara mendefinisikan variabel global di CSS?",
+                options: ["var-primary-color: #3490dc;", ":root { --primary-color: #3490dc; }", "global { $primary-color: #3490dc; }", "define(primary-color, #3490dc;)"],
+                correct: 1,
+                explanation: "Variabel CSS dideklarasikan dengan awalan garis mendatar ganda (--), biasanya ditempatkan di dalam selector :root agar dapat diakses secara global."
+            },
+            {
+                id: 15,
+                category: "CSS",
+                question: "Properti CSS3 yang digunakan untuk memberikan transisi halus perubahan nilai properti adalah...",
+                options: ["animation", "transform", "transition", "keyframes"],
+                correct: 2,
+                explanation: "Properti transition memungkinkan perubahan nilai properti CSS terjadi secara perlahan dan halus dalam durasi tertentu."
+            },
+            {
+                id: 16,
+                category: "JavaScript",
+                question: "Apa perbedaan mendasar antara let dan var dalam JavaScript?",
+                options: ["var memiliki scope block, sedangkan let memiliki scope global", "let memiliki scope block, sedangkan var memiliki scope fungsi (hoisted)", "let hanya untuk angka, sedangkan var bisa untuk semua tipe data", "let nilainya tidak bisa diubah kembali, sedangkan var bisa"],
+                correct: 1,
+                explanation: "let membatasi cakupan variabel hanya pada blok kurung kurawal tempat ia dideklarasikan (block scope), sedangkan var dilingkupi fungsi terdekatnya."
+            },
+            {
+                id: 17,
+                category: "JavaScript",
+                question: "Hasil dari operasi: typeof null dalam JavaScript adalah...",
+                options: ["\"null\"", "\"undefined\"", "\"object\"", "\"error\""],
+                correct: 2,
+                explanation: "Secara historis di JavaScript, typeof null menghasilkan \"object\". Ini adalah bug desain lama yang tetap dipertahankan demi kompatibilitas mundur."
+            },
+            {
+                id: 18,
+                category: "JavaScript",
+                question: "Perbedaan utama antara operator perbandingan == dan === adalah...",
+                options: ["== membandingkan tipe data saja, === membandingkan isi saja", "== membandingkan isi tanpa memeriksa tipe data, === membandingkan isi sekaligus tipe datanya", "== untuk perbandingan string, sedangkan === untuk angka", "Tidak ada perbedaan sama sekali"],
+                correct: 1,
+                explanation: "=== (Strict Equality) membandingkan nilai dan tipe data. Sedangkan == (Loose Equality) melakukan pemaksaan tipe data (coercion) sebelum membandingkan."
+            },
+            {
+                id: 19,
+                category: "JavaScript",
+                question: "Sintaks Arrow Function JavaScript yang mengembalikan nilai secara implisit untuk x + y adalah...",
+                options: ["(x, y) => { return x + y }", "(x, y) => x + y", "function(x, y) => x + y", "arrow (x, y) -> x + y"],
+                correct: 1,
+                explanation: "Jika badan Arrow Function berupa ekspresi satu baris tanpa kurung kurawal, nilai baris tersebut dikembalikan secara implisit tanpa kata kunci 'return'."
+            },
+            {
+                id: 20,
+                category: "JavaScript",
+                question: "Metode array manakah yang digunakan untuk memfilter elemen berdasarkan kondisi tertentu dan menghasilkan array baru?",
+                options: ["map()", "reduce()", "forEach()", "filter()"],
+                correct: 3,
+                explanation: "Metode filter() memproses setiap item di array dan menyaringnya ke array baru berdasarkan kondisi bernilai true pada callback-nya."
+            },
+            {
+                id: 21,
+                category: "JavaScript",
+                question: "Bagaimana cara menyeleksi elemen HTML yang memiliki kelas (class) 'header' menggunakan JavaScript modern?",
+                options: ["document.getElementById('header')", "document.querySelector('.header')", "document.getElementByTagName('header')", "document.select('.header')"],
+                correct: 1,
+                explanation: "Sintaks document.querySelector('.header') menggunakan pemilih CSS standar (.) untuk mengambil elemen pertama dengan class tersebut."
+            },
+            {
+                id: 22,
+                category: "JavaScript",
+                question: "Manakah cara yang benar dalam menangani error pada kode Async/Await?",
+                options: ["Menggunakan if-else biasa", "Menggunakan blok try...catch", "Menggunakan metode .then().catch() langsung di variabel", "Tidak bisa di-handle dan pasti crash"],
+                correct: 1,
+                explanation: "Penanganan error untuk fungsi asinkron bertipe async/await secara standar menggunakan struktur penanganan error try...catch."
+            },
+            {
+                id: 23,
+                category: "JavaScript",
+                question: "API modern bawaan browser yang digunakan untuk melakukan request HTTP asinkron adalah...",
+                options: ["XMLHttpRequest", "fetch()", "axios()", "http.get()"],
+                correct: 1,
+                explanation: "Fungsi fetch() adalah API bawaan peramban modern berbasis Promise untuk mempermudah transfer data asinkron melalui jaringan."
+            },
+            {
+                id: 24,
+                category: "JavaScript",
+                question: "Apa pengertian dari 'Event Bubbling' dalam JavaScript?",
+                options: ["Event yang memicu hancurnya halaman web", "Urutan jalannya event dari elemen target merambat ke atas hingga ke elemen induk terluar", "Penghentian eksekusi event secara paksa oleh browser", "Metode memicu banyak event secara bersamaan secara acak"],
+                correct: 1,
+                explanation: "Event Bubbling adalah konsep di mana suatu event pada suatu elemen akan merambat naik ke elemen-elemen induknya secara hierarkis."
+            },
+            {
+                id: 25,
+                category: "PHP & Backend",
+                question: "Bahasa pemrograman PHP dikategorikan sebagai bahasa pemrograman tipe...",
+                options: ["Client-side scripting", "Server-side scripting", "Markup language", "Compiled language"],
+                correct: 1,
+                explanation: "PHP diproses sepenuhnya di server web (server-side), lalu hasilnya dikirimkan ke client/browser dalam bentuk kode HTML biasa."
+            },
+            {
+                id: 26,
+                category: "PHP & Backend",
+                question: "Setiap variabel dalam bahasa PHP wajib diawali dengan simbol...",
+                options: ["@", "#", "$", "&"],
+                correct: 2,
+                explanation: "Di PHP, pendeklarasian dan penggunaan variabel ditandai dengan awalan karakter tanda dolar ($) contohnya $nama_variabel."
+            },
+            {
+                id: 27,
+                category: "PHP & Backend",
+                question: "Kapan sebaiknya kita menggunakan metode POST daripada GET dalam sebuah formulir HTML?",
+                options: ["Ketika data harus ditampilkan di kolom URL browser", "Ketika mengirimkan data sensitif seperti password atau file berukuran besar", "Ketika kita hanya ingin mencari informasi biasa dari server", "Metode GET selalu lebih baik dari POST dalam segala aspek"],
+                correct: 1,
+                explanation: "POST menyembunyikan parameter input di dalam request body (tidak terlihat di URL), sehingga ideal untuk data sensitif, unggah berkas, dan penulisan database."
+            },
+            {
+                id: 28,
+                category: "PHP & Backend",
+                question: "Metode koneksi database di PHP yang lebih aman dan mendukung prepared statements untuk mencegah SQL Injection adalah...",
+                options: ["mysql_connect()", "PDO (PHP Data Objects)", "Database_Link", "PostgreSQL Driver"],
+                correct: 1,
+                explanation: "PDO (PHP Data Objects) dan MySQLi adalah standar koneksi modern yang mendukung parameterized query / prepared statements untuk memblokir SQL Injection."
+            },
+            {
+                id: 29,
+                category: "PHP & Backend",
+                question: "Di manakah data session disimpan saat user login di aplikasi berbasis PHP?",
+                options: ["Di browser sisi klien dalam bentuk file teks biasa", "Di memori server web", "Di harddisk komputer klien", "Di database penyedia hosting eksternal"],
+                correct: 1,
+                explanation: "Data session disimpan dengan aman di server (server-side), sedangkan client hanya menyimpan penunjuk ID session (PHPSESSID) berupa cookie."
+            },
+            {
+                id: 30,
+                category: "PHP & Backend",
+                question: "Apa perbedaan perilaku jika file yang dipanggil tidak ditemukan antara fungsi include() dan require()?",
+                options: ["include() akan mematikan aplikasi (fatal error), sedangkan require() hanya memberi peringatan (warning)", "require() akan mematikan aplikasi (fatal error), sedangkan include() hanya memberi peringatan (warning)", "Keduanya berperilaku sama persis tanpa ada perbedaan", "include() membuat halaman blank, sedangkan require() me-restart server"],
+                correct: 1,
+                explanation: "require() menganggap file yang dipanggil bersifat wajib (mandatory) sehingga akan menghentikan eksekusi script jika gagal, sedangkan include() hanya memunculkan warning."
+            },
+            {
+                id: 31,
+                category: "Database",
+                question: "Perintah SQL untuk menambahkan record data baru ke dalam tabel 'users' adalah...",
+                options: ["ADD NEW users VALUES (...);", "INSERT INTO users VALUES (...);", "CREATE RECORD users VALUES (...);", "UPDATE INTO users SET VALUE (...);"],
+                correct: 1,
+                explanation: "Sintaks standar SQL untuk menyisipkan baris baru ke dalam tabel adalah INSERT INTO nama_tabel (kolom) VALUES (nilai)."
+            },
+            {
+                id: 32,
+                category: "Database",
+                question: "Kolom dalam tabel database yang nilainya wajib unik dan berfungsi mengidentifikasi tiap baris secara spesifik disebut...",
+                options: ["Foreign Key", "Secondary Key", "Primary Key", "Candidate Key"],
+                correct: 2,
+                explanation: "Primary Key adalah pengenal unik utama pada suatu tabel database relasional. Nilainya tidak boleh duplikat dan tidak boleh bernilai kosong (null)."
+            },
+            {
+                id: 33,
+                category: "Web Architecture",
+                question: "Protokol standar komunikasi yang digunakan untuk mengirim dan menerima halaman web melalui internet adalah...",
+                options: ["FTP", "SMTP", "HTTP", "SSH"],
+                correct: 2,
+                explanation: "HTTP (Hypertext Transfer Protocol) adalah protokol dasar pengiriman halaman web, gambar, video, dan berkas di World Wide Web."
+            },
+            {
+                id: 34,
+                category: "Web Architecture",
+                question: "Metode REST API (HTTP Verb) mana yang paling tepat untuk memperbarui sebagian (partial update) data yang sudah ada di server?",
+                options: ["PUT", "PATCH", "POST", "DELETE"],
+                correct: 1,
+                explanation: "PUT digunakan untuk mengganti seluruh data objek, sedangkan PATCH digunakan khusus untuk memperbarui sebagian kecil properti data yang ada."
+            },
+            {
+                id: 35,
+                category: "Web Architecture",
+                question: "Status HTTP Code '404 Not Found' memiliki arti bahwa...",
+                options: ["Server mengalami gangguan internal (internal server error)", "Request sukses diproses oleh server", "Klien tidak memiliki hak akses/otorisasi", "Sumber daya (resource) yang diminta tidak ditemukan di server"],
+                correct: 3,
+                explanation: "Status kode HTTP 404 menandakan browser berhasil berkomunikasi dengan server, namun server tidak menemukan dokumen yang dicari."
+            },
+            {
+                id: 36,
+                category: "Web Security",
+                question: "Bagaimanakah teknik paling efektif untuk melindungi aplikasi web dari serangan SQL Injection?",
+                options: ["Menghapus database secara berkala", "Menggunakan enkripsi MD5 pada setiap query", "Menggunakan Prepared Statements dan Parameterized Query", "Membuat aplikasi hanya bisa diakses dengan VPN"],
+                correct: 2,
+                explanation: "Prepared statements memisahkan struktur query dari data dinamis yang dikirim user sehingga input berbahaya tidak dievaluasi sebagai perintah database."
+            },
+            {
+                id: 37,
+                category: "Web Security",
+                question: "Serangan keamanan berupa injeksi script berbahaya (HTML/JS) ke dalam halaman web yang dibuka pengguna lain disebut...",
+                options: ["SQL Injection", "Cross-Site Scripting (XSS)", "Distributed Denial of Service (DDoS)", "Man-in-the-Middle (MitM)"],
+                correct: 1,
+                explanation: "XSS terjadi saat aplikasi web memasukkan input pengguna yang belum divalidasi atau disaring ke dalam output HTML yang dikirim ke browser korban."
+            },
+            {
+                id: 38,
+                category: "Web Security",
+                question: "Fungsi utama dari penerapan sertifikat SSL/TLS (HTTPS) pada situs web adalah...",
+                options: ["Mempercepat loading website hingga dua kali lipat", "Mencegah virus masuk ke dalam server", "Mengenkripsi komunikasi data antara browser klien dan server", "Menghilangkan iklan pop-up di website"],
+                correct: 2,
+                explanation: "HTTPS menjamin kerahasiaan data yang dikirimkan klien ke server dengan melakukan enkripsi, melindunginya dari intersepsi pihak luar (sniffing)."
+            },
+            {
+                id: 39,
+                category: "Modern JS Frameworks",
+                question: "Apa tujuan utama penggunaan teknologi 'Virtual DOM' pada library seperti React?",
+                options: ["Menghubungkan aplikasi web langsung ke satelit", "Melakukan kompilasi script JavaScript menjadi kode C++", "Mengurangi render langsung ke DOM asli dengan menghitung perubahan terlebih dahulu untuk efisiensi", "Mengganti penggunaan file HTML asli dengan file virtual"],
+                correct: 2,
+                explanation: "Virtual DOM bertindak sebagai representasi memori dari DOM asli. React memperbarui Virtual DOM terlebih dahulu, membandingkannya (diffing), lalu hanya memperbarui bagian yang berubah pada DOM asli demi performa cepat."
+            },
+            {
+                id: 40,
+                category: "Modern JS Frameworks",
+                question: "Dalam React, perbedaan mendasar antara 'props' dan 'state' adalah...",
+                options: ["Props bersifat dinamis dan dikelola internal, State bersifat statis dari luar", "Props digunakan untuk database, State digunakan untuk desain tampilan", "Props dilewatkan dari luar komponen (read-only), sedangkan State dikelola secara internal oleh komponen itu sendiri", "Tidak ada perbedaan, keduanya adalah sinonim"],
+                correct: 2,
+                explanation: "Props (Properties) ditransfer dari komponen induk ke anak dan tidak boleh diubah oleh penerima (immutable). State dikomposisikan secara internal di dalam komponen untuk melacak data yang dapat berubah."
+            },
+            {
+                id: 41,
+                category: "Modern JS Frameworks",
+                question: "Direktif bawaan dalam Vue.js yang digunakan untuk melakukan data binding dua arah (two-way data binding) pada elemen input adalah...",
+                options: ["v-bind", "v-on", "v-model", "v-show"],
+                correct: 2,
+                explanation: "v-model adalah direktif khusus di Vue.js untuk mengikat nilai input form dengan state di aplikasi secara dua arah secara sinkron."
+            },
+            {
+                id: 42,
+                category: "Modern JS Frameworks",
+                question: "Apakah peran utama dari NPM (Node Package Manager) dalam pengembangan web?",
+                options: ["Mengatur bandwidth server internet", "Manajemen dependensi dan paket library JavaScript pihak ketiga", "Mengubah bahasa JavaScript menjadi CSS", "Mengecilkan ukuran file gambar secara otomatis"],
+                correct: 1,
+                explanation: "NPM adalah manajer paket untuk ekosistem JavaScript, memudahkan developer menginstal, mengelola, dan memperbarui library eksternal."
+            },
+            {
+                id: 43,
+                category: "Web Architecture",
+                question: "Format pertukaran data modern yang berbasis teks ringan dan sangat mirip dengan penulisan objek JavaScript adalah...",
+                options: ["XML", "YAML", "JSON", "CSV"],
+                correct: 2,
+                explanation: "JSON (JavaScript Object Notation) adalah format pertukaran data standar yang ringan, mudah dibaca manusia, dan mudah diparsing oleh mesin."
+            },
+            {
+                id: 44,
+                category: "Version Control",
+                question: "Perintah Git yang digunakan untuk menyimpan riwayat snapshot perubahan lokal yang telah dilakukan di staging area adalah...",
+                options: ["git push", "git commit", "git add", "git checkout"],
+                correct: 1,
+                explanation: "Perintah git commit mencatat snapshot pekerjaan saat itu dengan pesan perubahan khusus ke dalam repositori lokal."
+            },
+            {
+                id: 45,
+                category: "Version Control",
+                question: "Perintah Git yang digunakan untuk mengunduh repositori jarak jauh (remote repository) dari platform seperti GitHub ke komputer lokal adalah...",
+                options: ["git clone", "git merge", "git pull", "git init"],
+                correct: 0,
+                explanation: "git clone digunakan untuk menduplikasi / menyalin repositori git yang ada di server remote ke direktori komputer lokal kita."
+            },
+            {
+                id: 46,
+                category: "Web Design",
+                question: "Apakah konsep dasar dari 'Responsive Web Design'?",
+                options: ["Website merespons pesan suara dari user", "Website dapat menyesuaikan tata letak dan kontennya agar proporsional pada berbagai ukuran layar", "Website merespons dengan cepat saat server sedang down", "Website mendeteksi sistem operasi handphone secara otomatis"],
+                correct: 1,
+                explanation: "Responsive Web Design adalah pendekatan desain web agar tampilan situs beradaptasi secara optimal mulai dari layar ponsel kecil hingga monitor desktop lebar."
+            },
+            {
+                id: 47,
+                category: "Web SEO & Performance",
+                question: "Mengapa kecepatan muat (loading speed) halaman web sangat berpengaruh pada SEO (Search Engine Optimization)?",
+                options: ["Google menggratiskan iklan jika web dimuat di bawah 1 detik", "Kecepatan situs merupakan salah satu metrik resmi algoritma Google Core Web Vitals untuk pemeringkatan halaman", "Website cepat tidak membutuhkan space hosting", "Browser menolak membuka halaman web yang lambat"],
+                correct: 1,
+                explanation: "Kecepatan akses halaman web berpengaruh pada kenyamanan pengguna. Google menggunakan Core Web Vitals (kecepatan render, interaktivitas, stabilitas visual) sebagai faktor penentu peringkat SEO."
+            },
+            {
+                id: 48,
+                category: "Web SEO & Performance",
+                question: "Metode optimasi 'Lazy Loading' pada gambar web berfungsi untuk...",
+                options: ["Mengurangi resolusi gambar secara paksa agar lebih buram", "Menunda pemuatan gambar hingga area gambar tersebut akan terlihat di layar pengguna saat di-scroll", "Memutar animasi loading tanpa batas waktu", "Mengubah ekstensi semua gambar ke format .png"],
+                correct: 1,
+                explanation: "Lazy Loading meningkatkan kecepatan muat awal situs dengan cara hanya mengunduh aset gambar saat gambar tersebut mendekati viewport layar pengguna."
+            },
+            {
+                id: 49,
+                category: "CSS Frameworks",
+                question: "Apa keunggulan utama dari framework Utility-First CSS seperti Tailwind CSS?",
+                options: ["Developer tidak perlu menulis file HTML sama sekali", "Menyediakan class utilitas siap pakai langsung di HTML untuk mempercepat kustomisasi layout yang konsisten", "Menggantikan fungsionalitas JavaScript secara menyeluruh", "Secara otomatis mendesain database relasional"],
+                correct: 1,
+                explanation: "Tailwind menyediakan ratusan class utilitas atomik (seperti flex, pt-4, text-center) sehingga developer bisa membuat antarmuka khusus langsung di file HTML tanpa keluar menulis file CSS eksternal."
+            },
+            {
+                id: 50,
+                category: "Web Development Lifecycle",
+                question: "Tindakan mengunggah file situs web dari komputer lokal ke web server agar dapat diakses oleh publik secara online disebut...",
+                options: ["Debugging", "Deployment", "Refactoring", "Compiling"],
+                correct: 1,
+                explanation: "Deployment adalah proses mendistribusikan / meng-upload aplikasi web ke server produksi sehingga sistem siap digunakan oleh pengguna akhir."
+            }
+        ];
+
+        // State variables
+        let studentInfo = { nama: '', kelas: '', nim: '' };
+        let isExamStarted = false;
+        let isExamFinished = false;
+        let currentIdx = 0;
+        let userAnswers = Array(50).fill(null);
+        let doubtfulAnswers = Array(50).fill(false);
+        let timeLeft = 5400; // 90 minutes in seconds
+        let timerInterval = null;
+        let reviewFilter = 'semua'; // 'semua', 'benar', 'salah', 'ragu'
+
+        // DOM elements
+        const screenRegister = document.getElementById('screen-register');
+        const screenExam = document.getElementById('screen-exam');
+        const screenResult = document.getElementById('screen-result');
+        const formRegister = document.getElementById('form-register');
+        const registerError = document.getElementById('register-error');
+        const registerErrorMsg = document.getElementById('register-error-msg');
+
+        // Register form submissions
+        formRegister.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const namaVal = document.getElementById('reg-nama').value.trim();
+            const nimVal = document.getElementById('reg-nim').value.trim();
+            const kelasVal = document.getElementById('reg-kelas').value.trim();
+
+            if (!namaVal || !nimVal || !kelasVal) {
+                showRegisterError("Harap lengkapi semua data pendaftaran!");
+                return;
+            }
+
+            studentInfo.nama = namaVal;
+            studentInfo.nim = nimVal;
+            studentInfo.kelas = kelasVal;
+
+            startExam();
+        });
+
+        function showRegisterError(msg) {
+            registerErrorMsg.textContent = msg;
+            registerError.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Start Exam Logic
+        function startExam() {
+            isExamStarted = true;
+            registerError.classList.add('hidden');
+            screenRegister.classList.add('hidden');
+            screenExam.classList.remove('hidden');
+
+            // Set Display text
+            document.getElementById('student-name-display').textContent = studentInfo.nama;
+            document.getElementById('student-nim-display').textContent = studentInfo.nim;
+            document.getElementById('student-kelas-display').textContent = studentInfo.kelas;
+
+            currentIdx = 0;
+            renderQuestion();
+            renderNavigationGrid();
+            startTimer();
+        }
+
+        // Timer interval handler
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    finishExamAuto();
+                    return;
+                }
+                timeLeft--;
+                updateTimerDisplay();
+            }, 1000);
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const h = Math.floor(timeLeft / 3600);
+            const m = Math.floor((timeLeft % 3600) / 60);
+            const s = timeLeft % 60;
+            const timeStr = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            document.getElementById('timer-clock').textContent = timeStr;
+
+            // Danger State (< 5 minutes / 300 seconds)
+            const badge = document.getElementById('timer-badge');
+            if (timeLeft < 300) {
+                badge.className = "flex items-center space-x-2 px-4 py-2 rounded-full border border-rose-200 bg-rose-50 text-rose-700 animate-pulse shadow-sm";
+            } else {
+                badge.className = "flex items-center space-x-2 px-4 py-2 rounded-full border border-amber-200 bg-amber-50 text-amber-800 shadow-sm";
+            }
+        }
+
+        // Render Active Question
+        function renderQuestion() {
+            const activeSoal = SOAL_DATASET[currentIdx];
+            document.getElementById('question-current-num').textContent = currentIdx + 1;
+            document.getElementById('question-category').textContent = activeSoal.category;
+            document.getElementById('question-text').textContent = activeSoal.question;
+
+            // Render Answers Options list
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const alphabetLabels = ["A", "B", "C", "D"];
+            activeSoal.options.forEach((option, index) => {
+                const isSelected = userAnswers[currentIdx] === index;
+                
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border-2 transition flex items-start space-x-3.5 focus:outline-none ${
+                    isSelected
+                        ? 'bg-blue-50/75 border-blue-500 text-blue-950 shadow-sm'
+                        : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700'
+                }`;
+
+                const badge = document.createElement('span');
+                badge.className = `flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center font-bold text-sm transition-colors ${
+                    isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'
+                }`;
+                badge.textContent = alphabetLabels[index];
+
+                const label = document.createElement('span');
+                label.className = "text-sm font-medium pt-0.5 leading-relaxed";
+                label.textContent = option;
+
+                btn.appendChild(badge);
+                btn.appendChild(label);
+
+                btn.addEventListener('click', () => {
+                    selectAnswer(index);
+                });
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Handle Navigation Buttons states
+            document.getElementById('btn-prev-question').disabled = (currentIdx === 0);
+            
+            const nextBtnText = document.getElementById('btn-next-text');
+            if (currentIdx === SOAL_DATASET.length - 1) {
+                nextBtnText.textContent = "Selesai Ujian";
+            } else {
+                nextBtnText.textContent = "Selanjutnya";
+            }
+
+            // Update status Doubtful Text
+            const isDoubtful = doubtfulAnswers[currentIdx];
+            const btnDoubtful = document.getElementById('btn-toggle-doubtful');
+            const doubtfulText = document.getElementById('doubtful-text');
+            if (isDoubtful) {
+                btnDoubtful.className = "w-full sm:w-auto px-5 py-2.5 rounded-xl text-sm font-semibold transition flex items-center justify-center space-x-2 bg-amber-500 hover:bg-amber-600 text-white shadow-sm";
+                doubtfulText.textContent = "Ragu-Ragu (Aktif)";
+            } else {
+                btnDoubtful.className = "w-full sm:w-auto px-5 py-2.5 rounded-xl text-sm font-semibold transition flex items-center justify-center space-x-2 border-2 border-amber-500 text-amber-600 hover:bg-amber-50";
+                doubtfulText.textContent = "Tandai Ragu-Ragu";
+            }
+        }
+
+        function selectAnswer(optionIdx) {
+            userAnswers[currentIdx] = optionIdx;
+            renderQuestion();
+            renderNavigationGrid();
+        }
+
+        // Next & Prev button actions
+        document.getElementById('btn-prev-question').addEventListener('click', () => {
+            if (currentIdx > 0) {
+                currentIdx--;
+                renderQuestion();
+                renderNavigationGrid();
+            }
+        });
+
+        document.getElementById('btn-next-question').addEventListener('click', () => {
+            if (currentIdx < SOAL_DATASET.length - 1) {
+                currentIdx++;
+                renderQuestion();
+                renderNavigationGrid();
+            } else {
+                // If it's the last question, open submission modal
+                triggerModalConfirm();
+            }
+        });
+
+        // Toggle Doubtful handler
+        document.getElementById('btn-toggle-doubtful').addEventListener('click', () => {
+            doubtfulAnswers[currentIdx] = !doubtfulAnswers[currentIdx];
+            renderQuestion();
+            renderNavigationGrid();
+        });
+
+        // Render Grid of Questions Navigation
+        function renderNavigationGrid() {
+            const gridContainer = document.getElementById('grid-navigation');
+            gridContainer.innerHTML = '';
+
+            let totalFilled = 0;
+
+            SOAL_DATASET.forEach((soal, idx) => {
+                const isCurrent = idx === currentIdx;
+                const isAnswered = userAnswers[idx] !== null;
+                const isDoubtful = doubtfulAnswers[idx];
+
+                if (isAnswered) totalFilled++;
+
+                const btn = document.createElement('button');
+                btn.title = `Soal ${idx + 1}`;
+                btn.textContent = idx + 1;
+
+                let btnClasses = "w-full aspect-square text-xs font-bold rounded-lg transition border flex items-center justify-center focus:outline-none ";
+
+                if (isCurrent) {
+                    btnClasses += "bg-blue-600 text-white border-blue-600 ring-2 ring-blue-300";
+                } else if (isDoubtful) {
+                    btnClasses += "bg-amber-500 text-white border-amber-500 hover:bg-amber-600";
+                } else if (isAnswered) {
+                    btnClasses += "bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600";
+                } else {
+                    btnClasses += "bg-white text-slate-700 border-slate-300 hover:bg-slate-50";
+                }
+
+                btn.className = btnClasses;
+                btn.addEventListener('click', () => {
+                    currentIdx = idx;
+                    renderQuestion();
+                    renderNavigationGrid();
+                });
+
+                gridContainer.appendChild(btn);
+            });
+
+            document.getElementById('progress-filled-num').textContent = totalFilled;
+        }
+
+        // Trigger Modal Confirm Finalizing Exam
+        const modalConfirm = document.getElementById('modal-confirm');
+        
+        document.getElementById('btn-trigger-finish').addEventListener('click', triggerModalConfirm);
+
+        function triggerModalConfirm() {
+            const totalFilled = userAnswers.filter(ans => ans !== null).length;
+            const totalDoubtful = doubtfulAnswers.filter(v => v).length;
+            const totalUnanswered = SOAL_DATASET.length - totalFilled;
+
+            document.getElementById('modal-stat-filled').textContent = `${totalFilled} Soal`;
+            document.getElementById('modal-stat-doubtful').textContent = `${totalDoubtful} Soal`;
+            document.getElementById('modal-stat-empty').textContent = `${totalUnanswered} Soal`;
+
+            modalConfirm.classList.remove('hidden');
+        }
+
+        document.getElementById('btn-modal-cancel').addEventListener('click', () => {
+            modalConfirm.classList.add('hidden');
+        });
+
+        document.getElementById('btn-modal-submit').addEventListener('click', () => {
+            modalConfirm.classList.add('hidden');
+            finishExam();
+        });
+
+        // Force complete on timer end
+        function finishExamAuto() {
+            finishExam();
+        }
+
+        // Finalize Exam Submission & Show Results
+        function finishExam() {
+            clearInterval(timerInterval);
+            isExamFinished = true;
+
+            screenExam.classList.add('hidden');
+            screenResult.classList.remove('hidden');
+
+            // Calculate Scoring
+            let totalCorrect = 0;
+            SOAL_DATASET.forEach((soal, idx) => {
+                if (userAnswers[idx] === soal.correct) {
+                    totalCorrect++;
+                }
+            });
+
+            const totalUnanswered = userAnswers.filter(ans => ans === null).length;
+            const totalIncorrect = SOAL_DATASET.length - totalCorrect - totalUnanswered;
+            const score = Math.round((totalCorrect / SOAL_DATASET.length) * 100);
+            const isPassed = score >= 70;
+
+            // Update Certificate Card style
+            const resultBadge = document.getElementById('result-badge-container');
+            const resultTitle = document.getElementById('result-status-title');
+            const resultDesc = document.getElementById('result-status-desc');
+
+            if (isPassed) {
+                resultBadge.className = "p-6 text-white text-center sm:text-left sm:flex sm:items-center sm:justify-between bg-gradient-to-r from-emerald-600 to-teal-700";
+                resultTitle.textContent = "Dinyatakan LULUS!";
+                resultDesc.textContent = "Nilai Anda memenuhi kriteria batas minimum kelulusan (70).";
+            } else {
+                resultBadge.className = "p-6 text-white text-center sm:text-left sm:flex sm:items-center sm:justify-between bg-gradient-to-r from-rose-600 to-pink-700";
+                resultTitle.textContent = "Dinyatakan TIDAK LULUS";
+                resultDesc.textContent = "Nilai Anda belum memenuhi kriteria batas minimum kelulusan (70).";
+            }
+
+            document.getElementById('result-score-num').textContent = score;
+
+            // Fill Metadata
+            document.getElementById('res-nama-val').textContent = studentInfo.nama;
+            document.getElementById('res-nim-val').textContent = studentInfo.nim;
+            document.getElementById('res-kelas-val').textContent = studentInfo.kelas;
+
+            // Fill Statistics numbers
+            document.getElementById('stats-correct').textContent = totalCorrect;
+            document.getElementById('stats-incorrect').textContent = totalIncorrect;
+            document.getElementById('stats-empty').textContent = totalUnanswered;
+            document.getElementById('stats-doubtful').textContent = doubtfulAnswers.filter(v => v).length;
+
+            // Set Timestamp
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            const timestampStr = new Date().toLocaleDateString('id-ID', options);
+            document.getElementById('finish-timestamp').textContent = `Ujian diselesaikan pada: ${timestampStr}`;
+
+            // Initialize Results Reviews list
+            renderReviewFeed();
+        }
+
+        // Interactive Filters for Results Page
+        document.getElementById('filter-all').addEventListener('click', (e) => setFilter('semua', e.target));
+        document.getElementById('filter-correct').addEventListener('click', (e) => setFilter('benar', e.target));
+        document.getElementById('filter-incorrect').addEventListener('click', (e) => setFilter('salah', e.target));
+        document.getElementById('filter-doubtful').addEventListener('click', (e) => setFilter('ragu', e.target));
+
+        function setFilter(type, activeElement) {
+            reviewFilter = type;
+            
+            // Toggle active filter styles
+            const buttons = [
+                document.getElementById('filter-all'),
+                document.getElementById('filter-correct'),
+                document.getElementById('filter-incorrect'),
+                document.getElementById('filter-doubtful')
+            ];
+
+            buttons.forEach(btn => {
+                if (btn === activeElement) {
+                    btn.className = "text-xs px-3 py-1.5 rounded-lg font-bold transition bg-white text-slate-800 shadow-sm border border-slate-200";
+                } else {
+                    btn.className = "text-xs px-3 py-1.5 rounded-lg font-bold transition text-slate-600 hover:text-slate-900 focus:outline-none";
+                }
+            });
+
+            renderReviewFeed();
+        }
+
+        // Generate Explanation review lists dynamically
+        function renderReviewFeed() {
+            const container = document.getElementById('review-feed');
+            container.innerHTML = '';
+
+            const alphabetLabels = ["A", "B", "C", "D"];
+
+            // Calculate total correct etc for filters counts
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let doubtfulCount = 0;
+
+            SOAL_DATASET.forEach((soal, idx) => {
+                const isCorrect = userAnswers[idx] === soal.correct;
+                const isAnswered = userAnswers[idx] !== null;
+
+                if (isCorrect) correctCount++;
+                if (isAnswered && !isCorrect) incorrectCount++;
+                if (doubtfulAnswers[idx]) doubtfulCount++;
+            });
+
+            // Update Counts display inside filters
+            document.getElementById('filter-all').textContent = `Semua (${SOAL_DATASET.length})`;
+            document.getElementById('filter-correct').textContent = `Benar (${correctCount})`;
+            document.getElementById('filter-incorrect').textContent = `Salah (${incorrectCount})`;
+            document.getElementById('filter-doubtful').textContent = `Ragu (${doubtfulCount})`;
+
+            // Filter Dataset
+            const filtered = SOAL_DATASET.filter((soal, idx) => {
+                const isCorrect = userAnswers[idx] === soal.correct;
+                const isAnswered = userAnswers[idx] !== null;
+
+                if (reviewFilter === 'benar') return isCorrect;
+                if (reviewFilter === 'salah') return !isCorrect && isAnswered;
+                if (reviewFilter === 'ragu') return doubtfulAnswers[idx];
+                return true; // semua
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 bg-white rounded-2xl border border-slate-200 text-slate-400 font-medium">
+                        Tidak ada soal yang sesuai dengan filter ini.
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach((soal) => {
+                const userAnswerIdx = userAnswers[soal.id - 1];
+                const isCorrect = userAnswerIdx === soal.correct;
+                
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-2xl p-5 sm:p-6 border transition shadow-sm ${
+                    isCorrect ? 'border-emerald-200' : userAnswerIdx === null ? 'border-slate-300' : 'border-rose-200'
+                }`;
+
+                // Card header section
+                const header = document.createElement('div');
+                header.className = "flex items-start justify-between gap-3 mb-4";
+
+                const meta = document.createElement('div');
+                meta.className = "space-y-1";
+                meta.innerHTML = `
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wide block">
+                        Soal ${soal.id} &bull; ${soal.category}
+                    </span>
+                    <h4 class="text-slate-800 font-semibold leading-relaxed text-sm sm:text-base">
+                        ${soal.question}
+                    </h4>
+                `;
+                header.appendChild(meta);
+
+                const badge = document.createElement('span');
+                if (isCorrect) {
+                    badge.className = "bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full border border-emerald-100 flex items-center space-x-1 flex-shrink-0";
+                    badge.innerHTML = `
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Benar</span>
+                    `;
+                } else if (userAnswerIdx === null) {
+                    badge.className = "bg-slate-100 text-slate-600 text-xs font-bold px-2.5 py-1 rounded-full border border-slate-200 flex items-center space-x-1 flex-shrink-0";
+                    badge.innerHTML = `<span>Kosong</span>`;
+                } else {
+                    badge.className = "bg-rose-50 text-rose-700 text-xs font-bold px-2.5 py-1 rounded-full border border-rose-100 flex items-center space-x-1 flex-shrink-0";
+                    badge.innerHTML = `
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        <span>Salah</span>
+                    `;
+                }
+                header.appendChild(badge);
+                card.appendChild(header);
+
+                // Options list display inside card
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600 mb-4";
+
+                soal.options.forEach((opt, oIdx) => {
+                    const isUserSelected = userAnswerIdx === oIdx;
+                    const isCorrectOpt = soal.correct === oIdx;
+
+                    let optBorder = "border-slate-200";
+                    let optBg = "bg-white";
+                    let labelColor = "bg-slate-100 text-slate-600";
+
+                    if (isCorrectOpt) {
+                        optBorder = "border-emerald-300";
+                        optBg = "bg-emerald-50/50";
+                        labelColor = "bg-emerald-600 text-white";
+                    } else if (isUserSelected) {
+                        optBorder = "border-rose-300";
+                        optBg = "bg-rose-50/50";
+                        labelColor = "bg-rose-600 text-white";
+                    }
+
+                    const optDiv = document.createElement('div');
+                    optDiv.className = `p-3 rounded-xl border flex items-center space-x-2.5 ${optBorder} ${optBg}`;
+                    optDiv.innerHTML = `
+                        <span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs ${labelColor}">
+                            ${alphabetLabels[oIdx]}
+                        </span>
+                        <span class="font-medium">${opt}</span>
+                    `;
+                    optionsGrid.appendChild(optDiv);
+                });
+                card.appendChild(optionsGrid);
+
+                // Explanation Block
+                const explanationBlock = document.createElement('div');
+                explanationBlock.className = "text-xs bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2";
+                
+                const answerText = userAnswerIdx !== null ? `${alphabetLabels[userAnswerIdx]}. ${soal.options[userAnswerIdx]}` : 'Tidak dijawab';
+                const correctText = `${alphabetLabels[soal.correct]}. ${soal.options[soal.correct]}`;
+
+                explanationBlock.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:justify-between font-semibold gap-1.5">
+                        <span class="text-slate-500">
+                            Jawaban Anda: <strong class="${isCorrect ? 'text-emerald-700' : userAnswerIdx === null ? 'text-slate-500' : 'text-rose-700'}">
+                                ${answerText}
+                            </strong>
+                        </span>
+                        <span class="text-slate-500">
+                            Kunci Jawaban: <strong class="text-emerald-700">${correctText}</strong>
+                        </span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-200">
+                        <span class="font-bold text-indigo-700 block mb-0.5">Penjelasan / Pembahasan:</span>
+                        <p class="text-slate-600 leading-relaxed font-light">${soal.explanation}</p>
+                    </div>
+                `;
+                card.appendChild(explanationBlock);
+
+                container.appendChild(card);
+            });
+        }
+
+        // Restart Exam handler
+        document.getElementById('btn-restart-exam').addEventListener('click', () => {
+            studentInfo = { nama: '', kelas: '', nim: '' };
+            isExamStarted = false;
+            isExamFinished = false;
+            currentIdx = 0;
+            userAnswers = Array(50).fill(null);
+            doubtfulAnswers = Array(50).fill(false);
+            timeLeft = 5400; 
+            
+            // Reset form fields
+            document.getElementById('reg-nama').value = '';
+            document.getElementById('reg-nim').value = '';
+            document.getElementById('reg-kelas').value = '';
+
+            // Toggle screens
+            screenResult.classList.add('hidden');
+            screenRegister.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
+```
+eof
+
+### Deskripsi Kode HTML yang Dibuat:
+1. **Pendekatan Single-File Mandate**: Semua elemen visual (HTML), struktur tata letak responsif (Tailwind CSS), dan algoritma logika evaluasi (JavaScript ES6) digabungkan sepenuhnya dalam berkas tunggal `index.html`.
+2. **Sistem Multi-Screen Terintegrasi**: Menggunakan navigasi logika pergantian CSS (`hidden`) dinamis untuk mengalirkan 3 fase utama pengerjaan:
+   - **Formulir Pendaftaran**: Data peserta divalidasi terlebih dahulu dengan sistem error alert internal.
+   - **Workspace Soal**: Menampilkan soal satu per satu, panel opsi interaktif, navigasi instan tombol (sebelumnya/selanjutnya), status ragu-ragu, dan grid nomor navigasi pintar.
+   - **Laporan Evaluasi**: Menampilkan kalkulasi instan skor, status kelulusan visual (Lulus/Gagal), filter interaktif pembahasan (Semua, Benar, Salah, Ragu), dan lembar pembahasan kunci beserta teori penjelasannya.
+3. **Optimasi Berbasis Responsif & Cetak PDF**: Grid navigasi dan tata letak soal dinamis akan menyesuaikan lebar secara fluid (fleksibel) pada layar laptop maupun browser mobile. Aturan style media cetak `@media print` ditambahkan khusus agar ketika peserta menekan opsi "Cetak Hasil/Ekspor PDF", lembar sertifikat kelulusan tercetak dengan rapi tanpa terganggu tombol navigasi.
